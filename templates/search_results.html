@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Search Results — RailBook{% endblock %}
+
+{% block content %}
+<h1>{{ source }} → {{ destination }}</h1>
+<p class="subtitle">Journey date: {{ journey_date }}</p>
+
+{% if trains %}
+<div class="train-list">
+    {% for train in trains %}
+    <div class="train-card">
+        <div class="train-info">
+            <h3>{{ train['train_name'] }} <span class="train-number">#{{ train['train_number'] }}</span></h3>
+            <p>{{ train['departure_time'] }} → {{ train['arrival_time'] }} &middot; {{ train['class'] }} Class</p>
+            <p class="fare">₹{{ train['fare'] }} per seat</p>
+        </div>
+        <div class="train-action">
+            {% if train['available_seats'] > 0 %}
+                <span class="seats available">{{ train['available_seats'] }} / {{ train['total_seats'] }} seats available</span>
+            {% else %}
+                <span class="seats full">Fully booked — will be waitlisted</span>
+            {% endif %}
+            <a href="{{ url_for('book', train_id=train['id'], journey_date=journey_date) }}" class="btn-primary">Book Now</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No trains found for this route on this date.</p>
+    <a href="{{ url_for('index') }}" class="btn-secondary">New Search</a>
+</div>
+{% endif %}
+{% endblock %}

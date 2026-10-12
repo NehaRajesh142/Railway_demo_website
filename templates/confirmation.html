@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Booking Confirmation — RailBook{% endblock %}
+
+{% block content %}
+<div class="confirmation-card status-{{ booking['status']|lower }}">
+    <h1>{{ booking['status'] }}</h1>
+    <p class="pnr">PNR: <strong>{{ booking['pnr'] }}</strong></p>
+
+    <table class="ticket-table">
+        <tr><td>Train</td><td>{{ booking['train_name'] }} ({{ booking['train_number'] }})</td></tr>
+        <tr><td>Route</td><td>{{ booking['source'] }} → {{ booking['destination'] }}</td></tr>
+        <tr><td>Class</td><td>{{ booking['class'] }}</td></tr>
+        <tr><td>Journey Date</td><td>{{ booking['journey_date'] }}</td></tr>
+        <tr><td>Passengers ({{ booking['passenger_count'] }})</td><td>{{ booking['passengers'] }}</td></tr>
+        <tr><td>Fare per seat</td><td>₹{{ booking['fare'] }}</td></tr>
+        <tr><td>Total Fare</td><td>₹{{ booking['fare'] * booking['passenger_count'] }}</td></tr>
+    </table>
+
+    {% if booking['status'] == 'Waitlisted' %}
+    <p class="note">No confirmed seats were available at the time of booking. This ticket is on the waitlist and will be confirmed if a seat opens up.</p>
+    {% endif %}
+</div>
+
+<a href="{{ url_for('index') }}" class="btn-secondary">Book Another Ticket</a>
+<a href="{{ url_for('my_bookings') }}" class="btn-primary">View My Bookings</a>
+{% endblock %}

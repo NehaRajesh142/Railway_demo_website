@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Search Trains — RailBook{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Find your train</h1>
+    <p class="subtitle">Search by source, destination and journey date.</p>
+
+    <form action="{{ url_for('search') }}" method="POST" class="search-form" id="search-form">
+        <div class="field">
+            <label for="source">From</label>
+            <input list="station-list" id="source" name="source" placeholder="e.g. Chennai" required>
+        </div>
+        <div class="field">
+            <label for="destination">To</label>
+            <input list="station-list" id="destination" name="destination" placeholder="e.g. Bangalore" required>
+        </div>
+        <datalist id="station-list">
+            {% for s in stations %}
+            <option value="{{ s }}">
+            {% endfor %}
+        </datalist>
+        <div class="field">
+            <label for="journey_date">Date of Journey</label>
+            <input type="date" id="journey_date" name="journey_date" min="{{ today }}" required>
+        </div>
+        <button type="submit" class="btn-primary">Search Trains</button>
+    </form>
+
+    <div class="hint-box">
+        <strong>Try these routes:</strong> Chennai → Bangalore, Chennai → Delhi, Chennai → Coimbatore.
+        <br>Chennai Mail (Sleeper) is fully booked — useful for testing "no seats" / waitlist logic.
+        Coimbatore General class has only 2 of 6 seats left.
+    </div>
+</section>
+{% endblock %}
